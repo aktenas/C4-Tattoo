@@ -1,0 +1,19 @@
+.bg-purple {
+    background-color: #593196 !important;
+}
+.text-purple {
+    color: #593196 !important;
+}
+.btn-purple {
+    background-color: #593196 !important;
+    color: #ffffff !important;
+    border: none;
+}
+/*when the mouse hovers over the button, darken the shade*/
+.btn-purple:hover {
+    background-color: #452475 !important;
+    color: #ffffff !important;
+}
+.bg-secondary {
+    background-color: #ffffff !important;
+}

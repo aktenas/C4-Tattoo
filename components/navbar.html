@@ -1,20 +1,30 @@
-<!--responsive layout with dropdown below a certain screen width-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-purple shadow-sm">
+﻿<nav class="navbar navbar-expand-lg bg-obsidian navbar-dark">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center fw-bold" href="index.html">
-            <i class="fa-solid fa-layer-group me-2"></i>TManager
+        
+        <!-- Upgraded High-Impact Branding Alignment with Custom Graphic Asset -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="logo-red.png" alt="C4 Tattoo Core Brand Identity Logo" class="navbar-logo me-2"> C4 TATTOO
         </a>
-        <!--dropdown-->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        
+        <!-- ms-auto pins this box to the right corner on mobile; me-2 keeps an intentional gap from the hamburger menu -->
+        <div class="d-flex align-items-center ms-auto me-2 order-lg-3">
+            <!-- Theme Control Toggle Button Trigger -->
+            <button id="theme-toggle" class="btn border-0 p-2 text-danger" title="Toggle System Illumination" style="font-size: 1.2rem;">
+                <i class="fa-solid fa-sun" id="theme-toggle-icon"></i>
+            </button>
+        </div>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="tasks.html">Tasks</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="about.html">About</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="contact.html">Contact</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="analytics.html">Analytics</a></li>
+            <ul class="navbar-nav ms-auto text-uppercase fw-bold" style="font-size: 0.9rem; letter-spacing: 0.05em;">
+                <li class="nav-item"><a class="nav-link text-white px-3" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary px-3" href="tasks.html">Bookings</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary px-3" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary px-3" href="contact.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link text-secondary px-3" href="reviews.html">Reviews</a></li>
             </ul>
         </div>
     </div>

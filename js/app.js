@@ -1,7 +1,4 @@
-﻿// Main JavaScript file for the C4 Tattoo website.
-// This file loads the shared navbar, controls dark mode, and shows API news.
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     loadNavbar();
     loadFooter();
     setThemeFromStorage();
@@ -11,21 +8,18 @@ $(document).ready(function () {
 });
 
 function loadNavbar() {
-    // The navbar is stored in one file so every page uses the same menu.
+    // loads navbar and sets the theme
     $('#global-header').load('components/navbar.html', function () {
-        // Run this again after the navbar loads because the icon is inside navbar.html.
         setThemeFromStorage();
     });
 }
+
 function loadFooter() {
-    // Pure, simple file loader with zero text strings inside
-    const footerNode = $('#global-footer');
-    if (footerNode.length) {
-        footerNode.load('components/footer.html');
-    }
+    // loads footer
+    $('#global-footer').load('components/footer.html');
 }
 function setThemeFromStorage() {
-    // localStorage remembers the theme even after the page is refreshed.
+    // stores the theme selected by the user
     const savedTheme = localStorage.getItem('c4-theme');
 
     if (savedTheme === 'light') {
@@ -38,7 +32,7 @@ function setThemeFromStorage() {
 }
 
 function setupThemeButton() {
-    // Event delegation is used because the button is loaded from navbar.html.
+    // the button that changes the theme
     $(document).on('click', '#theme-toggle', function () {
         if ($('body').hasClass('light-mode')) {
             localStorage.setItem('c4-theme', 'dark');
@@ -50,21 +44,22 @@ function setupThemeButton() {
     });
 }
 
+// sets up placeholder for API news
 function setupNewsSection() {
     const newsBox = document.querySelector('.api-news-container');
 
-    // Only the home page has the API news section.
+    // As the code is executed in all pages, only the index.html that contains the api news container will run this function
     if (!newsBox) {
         return;
     }
 
-    // Show two loading cards immediately, then replace them if the API works.
+    // Show the loading screen until the news fetch
     showDefaultNews(newsBox);
     getConventionNews(newsBox);
 }
 
+// Placeholder until the news load
 function showDefaultNews(newsBox) {
-    // These two cards keep the section filled while the website content loads.
     const defaultNews = [
         {
             title: 'Loading convention update',
@@ -79,23 +74,28 @@ function showDefaultNews(newsBox) {
     showNewsCards(newsBox, defaultNews);
 }
 
+// fetch the news
 function getConventionNews(newsBox) {
     const websiteUrl = 'https://athenstattooconvention.gr/';
+    // construct api url
     const apiUrl = 'https://r.jina.ai/http://r.jina.ai/http://' + websiteUrl;
-
+    // each result from each step is fed into the next one and processed
     fetch(apiUrl)
+        // saves the raw website code
         .then(function (response) {
             return response.text();
         })
+        // processes the website news, title and excerpt
         .then(function (websiteText) {
             showWebsiteNews(newsBox, websiteText);
         })
         .catch(function () {
-            // If the API fails, the loading cards stay visible instead of fake news.
+            // If the API fails the loading cards stay visible instead of fake news
             console.log('News API is not available right now.');
         });
 }
 
+// keeps only 2 cards to show
 function showWebsiteNews(newsBox, htmlText) {
     const newsItems = findNewsItems(htmlText);
 
@@ -108,16 +108,21 @@ function findNewsItems(htmlText) {
     if (htmlText.includes('Markdown Content:')) {
         return findNewsItemsFromText(htmlText);
     }
-
+    // uses DOM to find datafrom the athens tattoo convention website
     const parser = new DOMParser();
+    // 
     const htmlDocument = parser.parseFromString(htmlText, 'text/html');
+    // scans for headings
     const headings = htmlDocument.querySelectorAll('h1, h2, h3');
+    // new array to hold the news3
     const newsItems = [];
-
+    // runs this loop for all headings collected
     headings.forEach(function (heading) {
+        // grabs the title of the news
         const title = cleanText(heading.textContent);
+        //grabs the excerpt
         const excerpt = findExcerptAfterHeading(heading);
-
+        // check to see that the selected data is not random text, and that its enough to make the cards look full
         if (isGoodTitle(title) && excerpt.length > 5 && newsItems.length < 2) {
             newsItems.push({
                 title: title,
@@ -128,7 +133,7 @@ function findNewsItems(htmlText) {
 
     return newsItems;
 }
-
+// this is used to parse .md files if this is what the server returns
 function findNewsItemsFromText(websiteText) {
     const lines = websiteText.split('\n');
     const newsItems = [];
@@ -152,7 +157,7 @@ function findNewsItemsFromText(websiteText) {
 }
 
 function findTextAfterLine(lines, startIndex) {
-    // Look below the heading for the next useful line from the website.
+    // cleans the text lines from markdown symbols
     for (let i = startIndex + 1; i < lines.length; i++) {
         const text = cleanMarkdownText(lines[i]);
 
@@ -164,8 +169,8 @@ function findTextAfterLine(lines, startIndex) {
     return '';
 }
 
+// removes markdown symbols from the text version of the website
 function cleanMarkdownText(text) {
-    // This removes Markdown symbols from the public text version of the website.
     return text.replace(/[#*_`[\]()]/g, '').trim().replace(/\s+/g, ' ');
 }
 
@@ -186,8 +191,8 @@ function findExcerptAfterHeading(heading) {
     return '';
 }
 
+// removes extra spaces and line breaks from website text
 function cleanText(text) {
-    // This removes extra spaces and line breaks from website text.
     return text.trim().replace(/\s+/g, ' ');
 }
 
@@ -213,7 +218,7 @@ function isGoodTitle(text) {
 }
 
 function isGoodExcerpt(text) {
-    // This avoids short menu labels and buttons such as "BOOK NOW".
+    // avoids short menu labels and buttons
     if (text.length < 20) {
         return false;
     }
@@ -234,7 +239,7 @@ function isGoodExcerpt(text) {
 }
 
 function showNewsCards(newsBox, newsItems) {
-    // Clear the loading message before adding the news cards.
+    // clear the loading message before adding the news cards.
     newsBox.innerHTML = '';
     newsBox.classList.add('api-news-container-active');
 
@@ -254,9 +259,7 @@ function showNewsCards(newsBox, newsItems) {
         newsBox.appendChild(card);
     });
 }
-// ==========================================================================
-// DYNAMIC WORKFLOW BOOKING ENGINE (PURE CONTROLLER)
-// ==========================================================================
+// booking
 
 $(document).ready(function() {
     if ($('.booking-progress').length === 0) return;
@@ -313,21 +316,22 @@ $(document).ready(function() {
         renderStep(4);
     });
 
-    // Step 4 -> Complete Submission
+    // Step 4 
     $(document).on('click', '#final-confirm-btn', function() {
         alert(`BOOKING SUCCESSFUL!\nYour appointment for a ${state.service} with ${state.artist} on ${state.time} is locked in.`);
         window.location.href = 'index.html';
     });
 
-    // Back Link Step Regression Handling
+    // pressing back gets the user a step back
     $(document).on('click', '#booking-back-btn', function(e) {
         if (state.currentStep > 0) {
+            // catches the click event and doesnt allow the browser to send the user back to the index page
             e.preventDefault();
             renderStep(state.currentStep - 1);
         }
     });
 
-    // --- STATE RENDERING ENGINE ---
+    // renders each step state 
 
     function renderStep(stepNumber) {
         state.currentStep = stepNumber;
@@ -343,18 +347,17 @@ $(document).ready(function() {
         $('#booking-subtext').text(headings[stepNumber].sub);
     }
 });
-// ==========================================================================
-// DYNAMIC REVIEW SUBMISSION LOGIC LAYER
-// ==========================================================================
+
+// review system
 $(document).ready(function() {
     if ($('#client-review-form').length === 0) return;
 
-    // 1. Toggle review entry form panel visibility
+    // pops up the review panel
     $(document).on('click', '#toggle-review-form-btn', function() {
         const formPanel = $('#review-form-panel');
         formPanel.toggleClass('d-none');
         
-        // Dynamic helper wording update
+        // placeholders
         if (formPanel.hasClass('d-none')) {
             $(this).text('Write A Review');
         } else {
@@ -362,17 +365,17 @@ $(document).ready(function() {
         }
     });
 
-    // 2. Intercept submit action to generate dynamic feed item
+    // before submission the data is collected
     $('#client-review-form').on('submit', function(e) {
         e.preventDefault();
 
-        // Collect raw string form input properties
+        // collect raw string form input 
         const author = $('#review-author').val().trim();
         const tag = $('#review-tag').val().trim();
         const score = parseInt($('#review-rating').val());
         const content = $('#review-text').val().trim();
 
-        // Programmatically assemble star element layout arrays
+        // star element layout arrays
         let starsHTML = '';
         for (let i = 0; i < 5; i++) {
             if (i < score) {
@@ -381,56 +384,26 @@ $(document).ready(function() {
                 starsHTML += '<i class="fa-regular fa-star"></i> ';
             }
         }
-
-        // Build structural element matrix explicitly to obey custom framework styles
-        const reviewColumn = document.createElement('div');
-        reviewColumn.className = 'col-md-4';
+        // targets the review card template
+        const templateNode = document.querySelector('#review-card-template');
         
-        reviewColumn.innerHTML = `
-            <div class="studio-card">
-                <div class="studio-card-media flex-column">
-                    <div class="mb-2" style="color: #b30000;">${starsHTML}</div>
-                    <span class="fw-bold text-black text-uppercase user-review-author-name" style="font-size: 1.2rem; font-family: 'Impact', sans-serif;">${author}</span>
-                </div>
-                <div class="studio-card-content">
-                    <span class="text-red-accent d-block mb-2 text-uppercase" style="font-size: 0.85rem;">// ${tag}</span>
-                    <p style="height: auto; margin-bottom: 0; min-height: 110px;">"${content}"</p>
-                </div>
-            </div>
-        `;
+        // clones the template so its not edited directly
+        const cardClone = templateNode.content.cloneNode(true);
 
-        // Smoothly insert new card at the top of the feed grid list
-        $('#reviews-feed-grid').prepend(reviewColumn);
+        // adds the collected review data to the card
+        $(cardClone).find('.review-stars').html(starsHTML);
+        $(cardClone).find('.review-author').text(author);
+        $(cardClone).find('.review-tag').text(`// ${tag}`);
+        $(cardClone).find('.review-body').text(`"${content}"`);
 
-        // Reset inputs and close panel window
+        // injects the card into the review grid, prepend puts it first
+        $('#reviews-feed-grid').prepend(cardClone);
+
+        // closes window
         $('#client-review-form')[0].reset();
         $('#review-form-panel').addClass('d-none');
         $('#toggle-review-form-btn').text('Write A Review');
 
-        // Success notification feedback confirmation transmission alert
-        alert('REVIEW POSTED LIVE NATIVELY!');
+        alert('Your review has been posted.');
     });
 });
-function setupThemeButton() {
-    // Event delegation is used because the button is loaded from navbar.html.
-    $(document).on('click', '#theme-toggle', function () {
-        if ($('body').hasClass('light-mode')) {
-            localStorage.setItem('c4-theme', 'dark');
-        } else {
-            localStorage.setItem('c4-theme', 'light');
-        }
-
-        setThemeFromStorage();
-        syncFooterTheme(); // 
-    });
-}
-
-// Simple fallback helper function to handle active class rendering
-function syncFooterTheme() {
-    // CSS classes handle the rest of the styling inversions smoothly
-    if ($('body').hasClass('light-mode')) {
-        $('.studio-footer').addClass('light-mode-active');
-    } else {
-        $('.studio-footer').removeClass('light-mode-active');
-    }
-}

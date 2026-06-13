@@ -318,7 +318,7 @@ $(document).ready(function() {
 
     // Step 4 
     $(document).on('click', '#final-confirm-btn', function() {
-        alert(`BOOKING SUCCESSFUL!\nYour appointment for a ${state.service} with ${state.artist} on ${state.time} is locked in.`);
+        alert(`BOOKING SUCCESSFUL!\nYour appointment for a ${state.service} with ${state.artist} on ${state.time} is saved.`);
         window.location.href = 'index.html';
     });
 

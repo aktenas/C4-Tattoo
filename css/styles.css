@@ -664,11 +664,11 @@ body.light-mode .studio-footer a {
         font-weight: bold !important;
     }
 
-    /* Floating mobile arrow anchored right in the flex gap between the two boxes */
+    /* on mobile the arrow is added between the 2 boxes*/
     .booking-progress-step.is-active::before {
         content: ">" !important;
         position: absolute !important;
-        right: -12px !important; /* Centers perfectly inside the 16px gap */
+        right: -12px !important; 
         top: 50% !important;
         transform: translateY(-50%) !important;
         color: #FF0000 !important;
@@ -677,7 +677,7 @@ body.light-mode .studio-footer a {
         z-index: 10 !important;
     }
 
-    /* Force display on the immediate next upcoming step node only */
+    /* show only next step on mobile */
     .booking-progress-step.is-active + .booking-progress-step {
         display: block !important;
         background: #111111 !important;
@@ -685,9 +685,9 @@ body.light-mode .studio-footer a {
         border: 1px dashed #333333 !important;
     }
     
-    /* Suppress the gap arrow if the active node is on the final confirmation card */
-    .booking-progress-step.is-active:last-child::before {
-        display: none !important;
-        content: "" !important;
+        /* Suppress the gap arrow if the active node is on the final confirmation card */
+        .booking-progress-step.is-active:last-child::before {
+            display: none !important;
+            content: "" !important;
+        }
     }
-}

@@ -18,19 +18,20 @@ function loadFooter() {
     // loads footer
     $('#global-footer').load('components/footer.html');
 }
+
 function setThemeFromStorage() {
     // stores the theme selected by the user
     const savedTheme = localStorage.getItem('c4-theme');
 
     if (savedTheme === 'light') {
-        $('body').addClass('light-mode');
+        $('body').addClass('light-mode'); //adds css class light mode to html body element
         $('#theme-toggle-icon').removeClass('fa-sun').addClass('fa-moon');
     } else {
         $('body').removeClass('light-mode');
         $('#theme-toggle-icon').removeClass('fa-moon').addClass('fa-sun');
     }
 }
-
+// event listener for theme toggle button
 function setupThemeButton() {
     // the button that changes the theme
     $(document).on('click', '#theme-toggle', function () {
@@ -46,6 +47,7 @@ function setupThemeButton() {
 
 // sets up placeholder for API news
 function setupNewsSection() {
+    // with the $ it crashed
     const newsBox = document.querySelector('.api-news-container');
 
     // As the code is executed in all pages, only the index.html that contains the api news container will run this function
@@ -78,16 +80,17 @@ function showDefaultNews(newsBox) {
 function getConventionNews(newsBox) {
     const websiteUrl = 'https://athenstattooconvention.gr/';
     // construct api url
-    const apiUrl = 'https://r.jina.ai/http://r.jina.ai/http://' + websiteUrl;
-    // each result from each step is fed into the next one and processed
+    const apiUrl = 'https://r.jina.ai/' + websiteUrl;
+    
     fetch(apiUrl)
-        // saves the raw website code
+        // saves the raw markdown string text content
         .then(function (response) {
             return response.text();
         })
-        // processes the website news, title and excerpt
-        .then(function (websiteText) {
-            showWebsiteNews(newsBox, websiteText);
+        // processes the markdown string directly
+        .then(function (markdownText) {
+            showWebsiteNews(newsBox, markdownText);
+            console.log(markdownText)
         })
         .catch(function () {
             // If the API fails the loading cards stay visible instead of fake news
@@ -96,54 +99,30 @@ function getConventionNews(newsBox) {
 }
 
 // keeps only 2 cards to show
-function showWebsiteNews(newsBox, htmlText) {
-    const newsItems = findNewsItems(htmlText);
+function showWebsiteNews(newsBox, markdownText) {
+    const newsItems = findNewsItemsFromText(markdownText);
 
     if (newsItems.length === 2) {
         showNewsCards(newsBox, newsItems);
     }
 }
 
-function findNewsItems(htmlText) {
-    if (htmlText.includes('Markdown Content:')) {
-        return findNewsItemsFromText(htmlText);
-    }
-    // uses DOM to find datafrom the athens tattoo convention website
-    const parser = new DOMParser();
-    // 
-    const htmlDocument = parser.parseFromString(htmlText, 'text/html');
-    // scans for headings
-    const headings = htmlDocument.querySelectorAll('h1, h2, h3');
-    // new array to hold the news3
-    const newsItems = [];
-    // runs this loop for all headings collected
-    headings.forEach(function (heading) {
-        // grabs the title of the news
-        const title = cleanText(heading.textContent);
-        //grabs the excerpt
-        const excerpt = findExcerptAfterHeading(heading);
-        // check to see that the selected data is not random text, and that its enough to make the cards look full
-        if (isGoodTitle(title) && excerpt.length > 5 && newsItems.length < 2) {
-            newsItems.push({
-                title: title,
-                text: excerpt
-            });
-        }
-    });
-
-    return newsItems;
-}
-// this is used to parse .md files if this is what the server returns
+// Parses raw markdown files line by line
 function findNewsItemsFromText(websiteText) {
+    // separates the markdown file into lines
     const lines = websiteText.split('\n');
+
     const newsItems = [];
 
-    lines.forEach(function (line, index) {
+    lines.forEach(function (line, row) {
+        //  removes markdown symbols from the title
         const title = cleanMarkdownText(line);
 
+        // a heading has to start with # in markdown
         if (line.trim().startsWith('#') && isGoodTitle(title) && newsItems.length < 2) {
-            const excerpt = findTextAfterLine(lines, index);
-
+            // after the title, the next lines are defined as the excerpt of the announcement
+            const excerpt = findTextAfterLine(lines, row);
+            
             if (excerpt.length > 5) {
                 newsItems.push({
                     title: title,
@@ -155,9 +134,17 @@ function findNewsItemsFromText(websiteText) {
 
     return newsItems;
 }
+// Cleans text lines from markdown symbols
+function cleanMarkdownText(text) {
+    // replace part: scan the entire line (g) and replace the symbols in the brakets with an aempty space ' '
+    //trim: removes the spaces at the start and end of line
+    //replace: shrinks multiple space characters to one 
+    return text.replace(/[#*_`[\]()]/g, '').trim().replace(/\s+/g, ' ');
+}
 
+
+// Looks down the line array to grab the next available body text section block
 function findTextAfterLine(lines, startIndex) {
-    // cleans the text lines from markdown symbols
     for (let i = startIndex + 1; i < lines.length; i++) {
         const text = cleanMarkdownText(lines[i]);
 
@@ -165,35 +152,7 @@ function findTextAfterLine(lines, startIndex) {
             return text;
         }
     }
-
     return '';
-}
-
-// removes markdown symbols from the text version of the website
-function cleanMarkdownText(text) {
-    return text.replace(/[#*_`[\]()]/g, '').trim().replace(/\s+/g, ' ');
-}
-
-function findExcerptAfterHeading(heading) {
-    // Start from the next HTML element and look for real text from the website.
-    let nextElement = heading.nextElementSibling;
-
-    while (nextElement) {
-        const text = cleanText(nextElement.textContent);
-
-        if (isGoodExcerpt(text)) {
-            return text;
-        }
-
-        nextElement = nextElement.nextElementSibling;
-    }
-
-    return '';
-}
-
-// removes extra spaces and line breaks from website text
-function cleanText(text) {
-    return text.trim().replace(/\s+/g, ' ');
 }
 
 function isGoodTitle(text) {
@@ -202,11 +161,7 @@ function isGoodTitle(text) {
         return false;
     }
 
-    if (text === 'Athens Tattoo Convention') {
-        return false;
-    }
-
-    if (text === 'Athens Tattoo Convention – Athens Tattoo Convention') {
+    if (text === 'Athens Tattoo Convention' || text === 'Athens Tattoo Convention – Athens Tattoo Convention') {
         return false;
     }
 
@@ -223,11 +178,7 @@ function isGoodExcerpt(text) {
         return false;
     }
 
-    if (text.toLowerCase() === 'book now') {
-        return false;
-    }
-
-    if (text.toLowerCase().includes('skip to content')) {
+    if (text.toLowerCase() === 'book now' || text.toLowerCase().includes('skip to content')) {
         return false;
     }
 
@@ -259,7 +210,8 @@ function showNewsCards(newsBox, newsItems) {
         newsBox.appendChild(card);
     });
 }
-// booking
+
+// --- BOOKING SYSTEM ---
 
 $(document).ready(function() {
     if ($('.booking-progress').length === 0) return;
@@ -325,14 +277,12 @@ $(document).ready(function() {
     // pressing back gets the user a step back
     $(document).on('click', '#booking-back-btn', function(e) {
         if (state.currentStep > 0) {
-            // catches the click event and doesnt allow the browser to send the user back to the index page
             e.preventDefault();
             renderStep(state.currentStep - 1);
         }
     });
 
     // renders each step state 
-
     function renderStep(stepNumber) {
         state.currentStep = stepNumber;
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -348,7 +298,8 @@ $(document).ready(function() {
     }
 });
 
-// review system
+// --- REVIEW SYSTEM ---
+
 $(document).ready(function() {
     if ($('#client-review-form').length === 0) return;
 
@@ -357,7 +308,6 @@ $(document).ready(function() {
         const formPanel = $('#review-form-panel');
         formPanel.toggleClass('d-none');
         
-        // placeholders
         if (formPanel.hasClass('d-none')) {
             $(this).text('Write A Review');
         } else {

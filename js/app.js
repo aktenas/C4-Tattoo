@@ -6,7 +6,7 @@
     setupNewsSection();
     setupBookingPage();
 });
-
+// --- BASICS ---
 function loadNavbar() {
     // loads navbar and sets the theme
     $('#global-header').load('components/navbar.html', function () {
@@ -44,7 +44,7 @@ function setupThemeButton() {
         setThemeFromStorage();
     });
 }
-
+// --- NEWS API ---
 // sets up placeholder for API news
 function setupNewsSection() {
     // with the $ it crashed
@@ -90,7 +90,8 @@ function getConventionNews(newsBox) {
         // processes the markdown string directly
         .then(function (markdownText) {
             showWebsiteNews(newsBox, markdownText);
-            console.log(markdownText)
+            // for debugging
+            // console.log(markdownText)
         })
         .catch(function () {
             // If the API fails the loading cards stay visible instead of fake news
@@ -144,8 +145,8 @@ function cleanMarkdownText(text) {
 
 
 // Looks down the line array to grab the next available body text section block
-function findTextAfterLine(lines, startIndex) {
-    for (let i = startIndex + 1; i < lines.length; i++) {
+function findTextAfterLine(lines, startRow) {
+    for (let i = startRow + 1; i < lines.length; i++) {
         const text = cleanMarkdownText(lines[i]);
 
         if (isGoodExcerpt(text)) {
@@ -164,8 +165,8 @@ function isGoodTitle(text) {
     if (text === 'Athens Tattoo Convention' || text === 'Athens Tattoo Convention – Athens Tattoo Convention') {
         return false;
     }
-
-    if (text.toLowerCase().includes('presales')) {
+    //markdown only has capital letters
+    if (text.toLowerCase().includes('presales')) {1
         return false;
     }
 
@@ -214,6 +215,7 @@ function showNewsCards(newsBox, newsItems) {
 // --- BOOKING SYSTEM ---
 
 $(document).ready(function() {
+    // checks if theres the booking system in the current page
     if ($('.booking-progress').length === 0) return;
 
     let state = {
@@ -232,13 +234,13 @@ $(document).ready(function() {
         { title: "Verify Booking", sub: "Review your choices before final booking confirmation." }
     ];
 
-    // --- EVENT TRIGGERS ---
-
     // Step 0 -> Step 1
     $(document).on('click', '.category-select-btn', function() {
+        // finds the data category of the button just pressed in the HTML
         state.category = $(this).data('category');
         
         $('.service-filterable-card').addClass('d-none');
+        // selects the category of the clicked button and removes the display none in css
         $(`.service-filterable-card[data-cat="${state.category}"]`).removeClass('d-none');
         
         renderStep(1);
@@ -246,18 +248,21 @@ $(document).ready(function() {
 
     // Step 1 -> Step 2
     $(document).on('click', '.service-select-btn', function() {
+        // finds the service in html of the button clicked
         state.service = $(this).data('srv');
         renderStep(2);
     });
 
     // Step 2 -> Step 3
     $(document).on('click', '.artist-select-btn', function() {
+        // finds the artist in html of the button clicked
         state.artist = $(this).data('art');
         renderStep(3);
     });
 
     // Step 3 -> Step 4
     $(document).on('click', '.time-select-btn', function() {
+        // finds the time slot in html of the button clicked
         state.time = $(this).data('time');
         
         $('#summary-cat-node').text(state.category);
@@ -271,6 +276,7 @@ $(document).ready(function() {
     // Step 4 
     $(document).on('click', '#final-confirm-btn', function() {
         alert(`BOOKING SUCCESSFUL!\nYour appointment for a ${state.service} with ${state.artist} on ${state.time} is saved.`);
+        // after the alert is displayed, user is redirected to the home page
         window.location.href = 'index.html';
     });
 
@@ -288,9 +294,11 @@ $(document).ready(function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         $('.booking-progress-step').removeClass('is-active');
+        // equals index is used to select current step and make it the only one visible
         $('.booking-progress-step').eq(stepNumber).addClass('is-active');
 
         $('.booking-step-group').addClass('d-none');
+        // finds the current step view number in html and removes display none
         $(`#step-view-${stepNumber}`).removeClass('d-none');
 
         $('#booking-heading').text(headings[stepNumber].title);
@@ -301,6 +309,7 @@ $(document).ready(function() {
 // --- REVIEW SYSTEM ---
 
 $(document).ready(function() {
+    // checks if the current page has the review form, if not its not the review page
     if ($('#client-review-form').length === 0) return;
 
     // pops up the review panel
@@ -319,13 +328,13 @@ $(document).ready(function() {
     $('#client-review-form').on('submit', function(e) {
         e.preventDefault();
 
-        // collect raw string form input 
+        // collect raw string form input, val takes the raw input and trim removes the spaces
         const author = $('#review-author').val().trim();
         const tag = $('#review-tag').val().trim();
         const score = parseInt($('#review-rating').val());
         const content = $('#review-text').val().trim();
 
-        // star element layout arrays
+        // star element layout 
         let starsHTML = '';
         for (let i = 0; i < 5; i++) {
             if (i < score) {

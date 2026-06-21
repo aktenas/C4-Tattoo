@@ -6,10 +6,10 @@
    1 GLOBAL LAYOUTS
    ========================================================================== */
 
-/* Baseline Application Body (Dark Mode Default) */
+/* background */
 body.studio-body {
     background-color: #000000 !important;
-    /* CRT LINE EFFECT */
+    /* background lines */
     background-image: 
         linear-gradient(rgba(14, 14, 14, 0.85) 50%, rgba(0, 0, 0, 0.95) 50%),
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 4px),
@@ -21,18 +21,18 @@ body.studio-body {
     margin: 0px !important;
 }
 
-/* Fluid structure containment envelope shell */
+/* margins for mobile */
 .page-shell {
     width: 100% !important;
-    max-width: 1300px !important;  /* Expands across the screen up to a comfortable widescreen ceiling */
+    max-width: 1300px !important;
     margin-right: auto !important;
     margin-left: auto !important;
     position: relative !important;
-    padding-left: 20px !important;  /* Soft padding to prevent viewport edge clipping on mobile */
+    padding-left: 20px !important;
     padding-right: 20px !important;
 }
 
-/* Pure Red Structural Section Break Line Rule */
+/* red line */
 .red-accent-line {
     border-bottom: 4px solid #FF0000 !important;
     display: block;
@@ -40,7 +40,7 @@ body.studio-body {
     margin-bottom: 30px;
 }
 
-/* Secondary bg redefined */
+/* Secondary bg  */
 .bg-secondary {
     background-color: transparent !important;
     border: none !important;
@@ -127,7 +127,7 @@ section.bg-secondary .btn-red {
    3 NAVIGATION BAR
    ========================================================================== */
 
-/* Navbar Background Strip Configuration */
+/* Navbar Background */
 .bg-obsidian {
     background-color: #050505 !important;
     border-bottom: 1px solid #FF0000 !important;
@@ -156,7 +156,7 @@ section.bg-secondary .btn-red {
 
 
 /* ==========================================================================
-   4 STUDIO CARD INTERFACES & REVIEWS PANEL
+   4 STUDIO CARDS
    ========================================================================== */
 
 /* card grids */
@@ -233,7 +233,7 @@ section.bg-secondary .btn-red {
     color: #ffffff !important;
 }
 
-/* Entry Fields Architecture */
+/* entry fields */
 .studio-input, 
 .studio-select {
     background: #000000 !important;
@@ -252,7 +252,7 @@ section.bg-secondary .btn-red {
    5 BOOKING PROCESS
    ========================================================================== */
 
-/* Main booking Timeline Bar Frame */
+/* booking step process frame */
 .booking-progress {
     display: flex;
     background-color: #111111;
@@ -274,7 +274,7 @@ section.bg-secondary .btn-red {
 }
 /*current step*/
 .booking-progress-step.is-active {
-    background-color: #990000; /* Solid crimson marker highlighting current space */
+    background-color: #990000;
     color: #ffffff !important;
     font-weight: bold;
 }
@@ -299,7 +299,7 @@ section.bg-secondary .btn-red {
 
 
 /* ==========================================================================
-   6 DISPLAY EFFECTS, WIDGETS & BACKGROUND 
+   6 CAROUSEL & BACKGROUND 
    ========================================================================== */
 
 /* carousel blur background */
@@ -410,7 +410,7 @@ section.bg-secondary .btn-red {
     max-width: 750px !important;
     height: 80vh !important;/*spans 80% of the screen height*/
     max-height: 750px !important;
-    background-image: url('../logo-red.png') !important;
+    background-image: url('../images/logo-red.png') !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
     background-size: contain !important;
@@ -425,7 +425,7 @@ section.bg-secondary .btn-red {
    7  LIGHT MODE
    ========================================================================== */
 
-/* background lines */
+/* Background Lines */
 body.studio-body.light-mode {
     background-color: #f8f9fa !important;
     background-image: 
@@ -435,30 +435,27 @@ body.studio-body.light-mode {
     color: #2b2b2b !important;
 }
 
-/* h1 */
+/* header 1 to black with red shadow */
 body.studio-body.light-mode h1.page-title {
-    color: #111111 !important; /* Hard dark gray text */
-    text-shadow: 4px 4px 0px #FF0000 !important; /* Enforces the exact same solid red shadow */
-}
-
-body.studio-body.light-mode h2,
-body.studio-body.light-mode .studio-card-content h3 {
     color: #111111 !important;
+    text-shadow: 4px 4px 0px #FF0000 !important;
 }
 
-/*booking summary letters*/
+/* text*/
+body.studio-body.light-mode h2,
+body.studio-body.light-mode .studio-card-content h3,
+body.studio-body.light-mode .api-news-card h5,
+body.studio-body.light-mode .review-panel-container .form-title,
+body.studio-body.light-mode .user-review-author-name,
 body.studio-body.light-mode #summary-cat-node,
 body.studio-body.light-mode #summary-srv-node,
 body.studio-body.light-mode #summary-art-node,
-body.studio-body.light-mode #summary-time-node {
+body.studio-body.light-mode #summary-time-node,
+body.light-mode .analytics-value {
     color: #111111 !important;
 }
 
-body.studio-body.light-mode .user-review-author-name {
-    color: #111111 !important;
-}
-
-/* Light Mode Navbar Reversions */
+/* Navbar*/
 body.studio-body.light-mode .bg-obsidian {
     background-color: #ffffff !important;
     border-bottom: 1px solid #e0e0e0 !important;
@@ -468,23 +465,31 @@ body.studio-body.light-mode .navbar-brand {
     color: #111111 !important;
 }
 
-body.studio-body.light-mode .navbar-nav .nav-link {
+body.studio-body.light-mode .navbar-nav .nav-link,
+body.studio-body.light-mode .navbar-nav .nav-link.text-white {
     color: #555555 !important;
 }
 
-body.studio-body.light-mode .navbar-nav .nav-link.text-white {
-    color: #111111 !important;
-}
-/*3 bar dropdown menu icon for small screen*/
+/*burger menu icon*/
 body.studio-body.light-mode .navbar-toggler-icon {
     filter: invert(1) !important;
 }
 
-/* Light Mode Cards */
-body.studio-body.light-mode .studio-card {
+/* cards */
+body.studio-body.light-mode .studio-card,
+body.studio-body.light-mode .api-news-card,
+body.light-mode .review-panel-container,
+body.studio-body.light-mode .analytics-box {
     background-color: #ffffff !important;
     border: 1px solid #e0e0e0 !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* borders */
+body.studio-body.light-mode .api-news-card,
+body.light-mode .review-panel-container,
+body.studio-body.light-mode .analytics-box {
+    border-left: 4px solid #FF0000 !important;
 }
 
 body.studio-body.light-mode .studio-card-media {
@@ -492,17 +497,7 @@ body.studio-body.light-mode .studio-card-media {
     border-bottom: 2px solid #e0e0e0 !important;
 }
 
-body.studio-body.light-mode .analytics-box {
-    background: #ffffff !important; 
-    border: 1px solid #e0e0e0 !important;
-    border-left: 4px solid #FF0000 !important;
-}
-
-body.light-mode .analytics-value {
-    color: #111111 !important; 
-}
-
-/* booking steps */
+/* Booking Steps */
 body.studio-body.light-mode .booking-progress {
     background-color: #ffffff !important;
     border: 1px solid #e0e0e0 !important;
@@ -518,86 +513,40 @@ body.studio-body.light-mode .booking-progress-step.is-active {
     color: #ffffff !important;
 }
 
-body.light-mode .booking-progress-step:not(.is-active) {
-    background: #ffffff !important;
-    color: #111111 !important;
-    border: 1px solid #FF0000 !important;
-}
-
-/* on mobile it has to show only the next step, the + selects the element right next to it in html */
+body.light-mode .booking-progress-step:not(.is-active),
 body.light-mode .booking-progress-step.is-active + .booking-progress-step {
     background: #ffffff !important;
     color: #111111 !important;
     border: 1px solid #FF0000 !important;
 }
 
-/* Light Mode Form Handling Panels & News Feeds */
-body.studio-body.light-mode .api-news-container,
-body.studio-body.light-mode form input,
-body.studio-body.light-mode form textarea {
-    background: #ffffff !important;
-    border: 1px solid #cccccc !important;
-    color: #111111 !important;
-}
-
-body.studio-body.light-mode .api-news-card {
-    background: #ffffff !important;
-    border: 1px solid #e0e0e0 !important;
-    border-left: 4px solid #FF0000 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-}
-
-body.studio-body.light-mode .api-news-card h5 {
-    color: #111111 !important;
-}
-
-body.light-mode .review-panel-container {
-    background: #fdfdfd !important;
-    border: 1px solid #e0e0e0 !important;
-    border-left: 4px solid #FF0000 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-}
-/*the submit your review text*/
-body.light-mode .review-panel-container .form-title {
-    color: #111111 !important;
-}
-
+/* reviews */
 body.light-mode .studio-input,
-body.light-mode .studio-select {
-    background: #ffffff !important;
+body.light-mode .studio-select,
+body.light-mode form input,
+body.light-mode form textarea,
+body.light-mode .form-control {
+    background-color: #ffffff !important;
     color: #111111 !important; 
     border: 1px solid #cccccc !important;
 }
 
-body.light-mode .studio-input::placeholder {
-    color: #aaaaaa !important; 
+/* placeholders */
+body.light-mode .studio-input::placeholder,
+body.light-mode form input::placeholder,
+body.light-mode form textarea::placeholder,
+body.light-mode .form-control::placeholder {
+    color: #888888 !important; 
 }
 
-/*Watermark*/
+/* Watermark Transparency */
 body.studio-body.light-mode .page-shell::before {
     filter: opacity(0.095) !important;
 }
 
-/* gradient footer*/
+/* Gradient Footer*/
 body.light-mode .studio-footer {
-    background: linear-gradient(to top, 
-        rgba(255, 72, 72, 0.596) 0%,
-        rgba(255, 103, 103, 0.466) 10%,
-        rgba(245, 245, 245, 0.75) 60%, 
-        rgba(24, 1, 1, 0) 100%
-    ) !important;
-}
-
-body.light-mode .studio-footer .footer-text {
-    color: #444444 !important;
-}
-
-body.light-mode .studio-footer .footer-link {
-    color: #111111 !important;
-}
-
-body.light-mode .studio-footer .footer-link:hover {
-    color: #b30000 !important;
+    background: linear-gradient(to top, rgba(255, 72, 72, 0.6) 0%, rgba(245, 245, 245, 0.75) 60%) !important;
 }
 
 body.light-mode .studio-footer footer {
@@ -605,23 +554,28 @@ body.light-mode .studio-footer footer {
     border-top: 1px solid #e0e0e0 !important;
 }
 
+/*footer text*/
 body.light-mode .studio-footer p, 
-body.light-mode .studio-footer a {
+body.light-mode .studio-footer a,
+body.light-mode .studio-footer .footer-text,
+body.light-mode .studio-footer .footer-link {
     color: #111111 !important;
 }
 
-
+body.light-mode .studio-footer .footer-link:hover {
+    color: #b30000 !important;
+}
 /* ==========================================================================
    8 RESPONSIVE DESIGN
    ========================================================================== */
+@media (max-width: 480px) {
+    .carousel-inner { height: 260px !important; }
+}
 
 @media (max-width: 768px) {
     .carousel-inner { height: 320px !important; }
 }
 
-@media (max-width: 480px) {
-    .carousel-inner { height: 260px !important; }
-}
 
 @media (max-width: 576px) {
     /* Title Compression rules */
@@ -631,17 +585,17 @@ body.light-mode .studio-footer a {
         letter-spacing: 0.02em !important;
     }
 
-    /* Strict mobile container envelope with absolute overflow lockdowns */
+    /* booking process */
     .booking-progress {
         display: flex !important;
         overflow: hidden !important; 
-        gap: 16px !important; /* Expanded gap to give the floating arrow room */
+        gap: 16px !important; /* expand gap to give the floating arrow room */
         width: 100% !important;
         padding: 0 !important;
         position: relative !important;
     }
 
-    /* Hide standard steps globally on phone screen bounds */
+    /* Hide desktop steps */
     .booking-progress-step {
         display: none !important;
         flex: 1 1 0px !important; 
@@ -650,13 +604,13 @@ body.light-mode .studio-footer a {
         padding: 10px 4px !important;
     }
 
-    /* Cancel out the desktop trail arrow style on mobile */
+    /* remove desktop arrow*/
     .booking-progress-step:not(:last-child)::after {
         content: "" !important;
         display: none !important;
     }
 
-    /* Force display on the current active step node item */
+    /* deisplay current step */
     .booking-progress-step.is-active {
         display: block !important;
         background: #FF0000 !important;
@@ -685,9 +639,9 @@ body.light-mode .studio-footer a {
         border: 1px dashed #333333 !important;
     }
     
-        /* Suppress the gap arrow if the active node is on the final confirmation card */
-        .booking-progress-step.is-active:last-child::before {
-            display: none !important;
-            content: "" !important;
-        }
+    /*remove the arrow on final confirm step even though its red and invisible */
+    .booking-progress-step.is-active:last-child::before {
+        display: none !important;
+        content: "" !important;
     }
+}

@@ -228,10 +228,10 @@ $(document).ready(function() {
 
     const headings = [
         { title: "Select a Service", sub: "Book a tattoo session, piercing, or checkup appointment." },
-        { title: "Select Option", sub: "Choose a specific option for your service." },
-        { title: "Select an Artist", sub: "Choose a resident studio artist." },
+        { title: "Select Option", sub: "Choose a service." },
+        { title: "Select an Artist", sub: "Choose an artist." },
         { title: "Select Date and Time", sub: "Choose an available date and time slot below." },
-        { title: "Verify Booking", sub: "Review your choices before final booking confirmation." }
+        { title: "Verify Booking", sub: "Review booking." }
     ];
 
     // Step 0 -> Step 1
